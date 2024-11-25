@@ -13,7 +13,7 @@ async function loadConfig() {
         const response = await fetch('config.yml');
         const yamlText = await response.text();
         config = jsyaml.load(yamlText);
-        console.log('Loaded config:', config); 
+        console.log('Loaded config:', config); // Check if config is loaded
     } catch (error) {
         console.error('Error loading config:', error);
         contentDiv.innerHTML = '<p>Error loading configuration. Please try again later.</p>';
@@ -29,7 +29,7 @@ function showHome() {
     contentDiv.innerHTML = `
         <div class="home-content">
             <h2>Welcome to the Module Archive</h2>
-            <p>Explore educational modules from Grade 1 to Grade 12. Our archive provides easy access to learning materials across various subjects and grade levels.</p>
+            <p>Explore educational modules from Grade 1 to Grade 12. Our archive provides easy access to learning materials across the various regions of the Philippines.</p>
             <button class="cta-button" onclick="showGrades()">Start Exploring</button>
         </div>
     `;
@@ -74,26 +74,56 @@ function showModules(grade, quarter, subject) {
     const modules = config.grades[grade][quarter][subject];
     if (Array.isArray(modules)) {
         modules.forEach(module => {
-            const card = createCard(module, () => loadModulePages(grade, quarter, subject, module), 'card module-card');
+            const moduleName = typeof module === 'string' ? module : module.name; // Access name if it's an object
+            const card = createCard(moduleName, () => loadModulePages(grade, quarter, subject, module), 'card module-card');
             contentDiv.appendChild(card);
         });
     } else {
         Object.keys(modules).forEach(subSubject => {
             const subModules = modules[subSubject];
             subModules.forEach(module => {
-                const card = createCard(`${subSubject.toUpperCase()}: ${module}`, () => loadModulePages(grade, quarter, `${subject}/${subSubject}`, module), 'card module-card');
+                const moduleName = typeof module === 'string' ? module : module.name; // Access name if it's an object
+                const card = createCard(`${subSubject.toUpperCase()}: ${moduleName}`, () => loadModulePages(grade, quarter, `${subject}/${subSubject}`, module), 'card module-card');
                 contentDiv.appendChild(card);
             });
         });
     }
 }
 
+
 function loadModulePages(grade, quarter, subject, module) {
-    currentFolder = `modules/grade${grade}/${quarter}/${subject}/${module}`;
+    currentFolder = `modules/grade${grade}/${quarter}/${subject}/${module.name}`;  // Use module.name for the folder
     currentPage = 0;
-    totalPages = 40; // Assuming 40 pages per module, you might want to adjust this or make it dynamic
+
+    // Fetch the page count from the module object
+    try {
+        totalPages = module.pages;  // Access the 'pages' field directly
+        if (!totalPages) {
+            console.error('Page count is missing for this module.');
+            totalPages = 40; // Default page count if not found
+        }
+    } catch (error) {
+        console.error('Error getting page count:', error);
+        totalPages = 40; // Default to 40 if an error occurs
+    }
+
     displayPage();
     overlay.classList.remove('hidden');
+}
+
+
+// Function to get page count from the config based on grade, quarter, subject, and module
+function getPageCountFromConfig(grade, quarter, subject, module) {
+    // Check if the grade, quarter, subject, and module exist in the config
+    if (config.grades && config.grades[grade] && config.grades[grade][quarter] && config.grades[grade][quarter][subject]) {
+        const moduleData = config.grades[grade][quarter][subject].find(item => item.startsWith(module));
+        if (moduleData) {
+            const parts = moduleData.split(":");
+            const pageCount = parts[1]?.trim();
+            return parseInt(pageCount) || -1;  // Return page count or -1 if not found
+        }
+    }
+    return -1;  // Return -1 if the page count is not found in the config
 }
 
 function displayPage() {
@@ -151,4 +181,3 @@ function createCard(title, onClick, className) {
 }
 
 init();
-
