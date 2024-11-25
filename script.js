@@ -13,7 +13,7 @@ async function loadConfig() {
         const response = await fetch('config.yml');
         const yamlText = await response.text();
         config = jsyaml.load(yamlText);
-        console.log('Loaded config:', config); // Check if config is loaded
+        console.log('Loaded config:', config); 
     } catch (error) {
         console.error('Error loading config:', error);
         contentDiv.innerHTML = '<p>Error loading configuration. Please try again later.</p>';
