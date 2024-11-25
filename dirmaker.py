@@ -1,6 +1,6 @@
 import os
 
-# Define the main directory and subdirectories
+# Define the main directory and hubdirectories
 main_dir = 'grade8'
 quarters = ['q1', 'q2', 'q3', 'q4']
 
