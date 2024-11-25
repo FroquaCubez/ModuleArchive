@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Archive</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+</head>
+<body>
+    <nav>
+        <h1>Module Archive</h1>
+        <ul>
+            <li><a href="#" onclick="showHome()">Home</a></li>
+            <li><a href="#" onclick="showGrades()">Modules</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <!-- Dynamic content will be loaded here -->
+    </div>
+
+    <div id="overlay" class="hidden">
+        <div id="viewer">
+            <button id="exit-btn" onclick="closeViewer()">×</button>
+            <img id="module-image" src="" alt="Module Page">
+            <div id="controls">
+                <button onclick="prevPage()">Previous</button>
+                <select id="page-select" onchange="jumpToPage(this.value)"></select>
+                <button onclick="nextPage()">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

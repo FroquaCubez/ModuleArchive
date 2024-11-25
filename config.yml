@@ -1,0 +1,29 @@
+
+grades:
+  8:
+    q1:
+    q2:
+      ap:
+        - "Araling Panlipunan (PIVOT)"
+      english:
+        - "English (PIVOT)"
+      esp:
+        - "Edukasyon sa Pagkakatao (PIVOT)"
+      filipino:
+        - "Filipino (PIVOT)"
+      mapeh:
+        music:
+          - "Music (PIVOT)"
+        arts:
+          - "Arts (PIVOT)"
+        pe:
+          - "PE (PIVOT)"
+        health:
+          - "Health (PIVOT)"
+      math:
+        - "Math (PIVOT)"
+      science:
+        - "Science (PIVOT)"
+    q3:
+    q4:
+
