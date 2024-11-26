@@ -1,6 +1,37 @@
 grades:
   8:
-    q1: {}
+    q1: 
+      ap:
+        - name: "Araling Panlipunan (PIVOT)"
+          pages: 40
+      english:
+        - name: "English (PIVOT)"
+          pages: 40
+      esp:
+        - name: "Edukasyon sa Pagkakatao (PIVOT)"
+          pages: 40
+      filipino:
+        - name: "Filipino (PIVOT)"
+          pages: 40
+      mapeh:
+        music:
+          - name: "Music (PIVOT)"
+            pages: 40
+        arts:
+          - name: "Arts (PIVOT)"
+            pages: 40
+        pe:
+          - name: "PE (PIVOT)"
+            pages: 40
+        health:
+          - name: "Health (PIVOT)"
+            pages: 40
+      math:
+        - name: "Math (PIVOT)"
+          pages: 40
+      science:
+        - name: "Science (PIVOT)"
+          pages: 40
     q2:
       ap:
         - name: "Araling Panlipunan (PIVOT)"
@@ -33,4 +64,3 @@ grades:
       science:
         - name: "Science (PIVOT)"
           pages: 40
-    q4: {}
