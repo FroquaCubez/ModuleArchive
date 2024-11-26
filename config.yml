@@ -33,5 +33,4 @@ grades:
       science:
         - name: "Science (PIVOT)"
           pages: 40
-    q3: {}
     q4: {}
