@@ -20,7 +20,7 @@ nav {
    z-index: 1000;
    backdrop-filter: blur(10px);
    border-radius: 50px;
-   max-width: 390px;
+   max-width: 300px;
 }
 
 .nav-content {
