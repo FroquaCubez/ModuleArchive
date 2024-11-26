@@ -148,6 +148,8 @@ nav a:hover {
    background-color: rgba(30, 30, 30, 0.8);
    padding: 0.5rem;
    border-radius: 25px;
+   right: 20px;
+   left: 20px;
 }
 
 #controls button, #controls select {
