@@ -44,7 +44,6 @@ function showAbout() {
         <h2>About Module Archive</h2>
         <p>Module Archive is a project dedicated to providing easy access to educational materials for students and teachers across the Philippines. Our goal is to make learning resources readily available to everyone, regardless of their location or circumstances.</p>
         <p>This platform hosts a wide range of modules from Grade 1 to Grade 12, covering various subjects and aligned with the curriculum set by the Department of Education.</p>
-        <p>If you have any questions or would like to contribute to the project, please join our Discord community or reach out to us via email at contact@modulearchive.org.</p>
     `;
 }
 
