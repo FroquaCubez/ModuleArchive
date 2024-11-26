@@ -3,6 +3,8 @@ const contentDiv = document.getElementById('content');
 const overlay = document.getElementById('overlay');
 const moduleImage = document.getElementById('module-image');
 const pageSelect = document.getElementById('page-select');
+const errorMessage = document.getElementById('error-message');
+const errorText = document.getElementById('error-text');
 
 let currentFolder = '';
 let currentPage = 0;
@@ -13,10 +15,10 @@ async function loadConfig() {
         const response = await fetch('config.yml');
         const yamlText = await response.text();
         config = jsyaml.load(yamlText);
-        console.log('Loaded config:', config); // Check if config is loaded
+        console.log('Loaded config:', config);
     } catch (error) {
         console.error('Error loading config:', error);
-        contentDiv.innerHTML = '<p>Error loading configuration. Please try again later.</p>';
+        showError('Error loading configuration. Please try again later.');
     }
 }
 
@@ -28,10 +30,21 @@ async function init() {
 function showHome() {
     contentDiv.innerHTML = `
         <div class="home-content">
-            <h2>Welcome to the Module Archive</h2>
-            <p>Explore educational modules from Grade 1 to Grade 12. Our archive provides easy access to learning materials across the various regions of the Philippines.</p>
-            <button class="cta-button" onclick="showGrades()">Start Exploring</button>
+            <div class="home-text">
+                <h2>Welcome to the Module Archive</h2>
+                <p>Explore educational modules from Grade 1 to Grade 12. Our archive provides easy access to learning materials across the various regions of the Philippines.</p>
+                <button class="cta-button" onclick="showGrades()">Start Exploring</button>
+            </div>
         </div>
+    `;
+}
+
+function showAbout() {
+    contentDiv.innerHTML = `
+        <h2>About Module Archive</h2>
+        <p>Module Archive is a project dedicated to providing easy access to educational materials for students and teachers across the Philippines. Our goal is to make learning resources readily available to everyone, regardless of their location or circumstances.</p>
+        <p>This platform hosts a wide range of modules from Grade 1 to Grade 12, covering various subjects and aligned with the curriculum set by the Department of Education.</p>
+        <p>If you have any questions or would like to contribute to the project, please join our Discord community or reach out to us via email at contact@modulearchive.org.</p>
     `;
 }
 
@@ -90,47 +103,46 @@ function showModules(grade, quarter, subject) {
     }
 }
 
-
 function loadModulePages(grade, quarter, subject, module) {
-    currentFolder = `modules/grade${grade}/${quarter}/${subject}/${module.name}`;  // Use module.name for the folder
+    currentFolder = `modules/grade${grade}/${quarter}/${subject}/${module.name}`;
     currentPage = 0;
+    currentZoom = 1;
 
-    // Fetch the page count from the module object
     try {
-        totalPages = module.pages;  // Access the 'pages' field directly
+        totalPages = module.pages;
         if (!totalPages) {
-            console.error('Page count is missing for this module.');
-            totalPages = 40; // Default page count if not found
+            showError('Page count is missing for this module.');
+            totalPages = 40;
         }
     } catch (error) {
         console.error('Error getting page count:', error);
-        totalPages = 40; // Default to 40 if an error occurs
+        showError('Error loading module. Using default page count.');
+        totalPages = 40;
     }
 
     displayPage();
     overlay.classList.remove('hidden');
 }
 
-
-// Function to get page count from the config based on grade, quarter, subject, and module
-function getPageCountFromConfig(grade, quarter, subject, module) {
-    // Check if the grade, quarter, subject, and module exist in the config
-    if (config.grades && config.grades[grade] && config.grades[grade][quarter] && config.grades[grade][quarter][subject]) {
-        const moduleData = config.grades[grade][quarter][subject].find(item => item.startsWith(module));
-        if (moduleData) {
-            const parts = moduleData.split(":");
-            const pageCount = parts[1]?.trim();
-            return parseInt(pageCount) || -1;  // Return page count or -1 if not found
-        }
-    }
-    return -1;  // Return -1 if the page count is not found in the config
-}
-
 function displayPage() {
     const pageNumber = String(currentPage).padStart(3, '0');
     moduleImage.src = `${currentFolder}/${pageNumber}.png`;
+    moduleImage.style.transform = `scale(${currentZoom})`;
     moduleImage.onerror = handleImageError;
     updatePageSelector();
+}
+
+function handleImageError() {
+    moduleImage.src = 'placeholder.png';
+    showError('Image not found. Please check the folder structure or filenames.');
+}
+
+function showError(message) {
+    errorText.textContent = message;
+    errorMessage.classList.remove('hidden');
+    setTimeout(() => {
+        errorMessage.classList.add('hidden');
+    }, 5000);
 }
 
 function updatePageSelector() {
@@ -142,11 +154,6 @@ function updatePageSelector() {
         option.selected = i === currentPage;
         pageSelect.appendChild(option);
     }
-}
-
-function handleImageError() {
-    moduleImage.src = 'placeholder.png';
-    alert('Image not found. Please check the folder structure or filenames.');
 }
 
 function prevPage() {
